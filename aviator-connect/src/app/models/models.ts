@@ -14,10 +14,12 @@ export interface Freelancer {
   hourlyRate?: string;
   yearsExperience: number;
   profileImage?: string;
+  cvFileName?: string;
+  cvData?: string;
   createdAt: Date;
 }
 
-export type FreelancerRole = 'part66-b1' | 'part66-b2' | 'part66-b1b2' | 'pilot' | 'cabin-crew' | 'ground-ops' | 'dispatcher';
+export type FreelancerRole = 'technician' | 'pilot' | 'cabin-crew' | 'ground-ops';
 
 export interface Qualifications {
   typeRatings: string[];
@@ -28,14 +30,13 @@ export interface Qualifications {
 export interface JobPosting {
   id: string;
   companyName: string;
-  companyType: CompanyType;
   location: string;
   country: string;
   roleType: FreelancerRole;
   requiredQualifications: Qualifications;
   requiredLanguages: string[];
   startDate: string;
-  endDate: string;
+  endDate?: string;
   accommodationProvided: boolean;
   travelProvided: boolean;
   description: string;
@@ -46,24 +47,11 @@ export interface JobPosting {
   createdAt: Date;
 }
 
-export type CompanyType = 'airline' | 'mro' | 'handling' | 'charter' | 'cargo';
-
 export const ROLE_LABELS: { [key in FreelancerRole]: string } = {
-  'part66-b1': 'Part-66 B1 Tehnik',
-  'part66-b2': 'Part-66 B2 Tehnik',
-  'part66-b1b2': 'Part-66 B1/B2 Tehnik',
+  'technician': 'Tehnik (Part-66)',
   'pilot': 'Piloot',
   'cabin-crew': 'Cabin Crew',
-  'ground-ops': 'Ground Operations',
-  'dispatcher': 'Flight Dispatcher'
-};
-
-export const COMPANY_TYPE_LABELS: { [key in CompanyType]: string } = {
-  'airline': 'Lennufirma',
-  'mro': 'MRO',
-  'handling': 'Handling',
-  'charter': 'Charter',
-  'cargo': 'Cargo'
+  'ground-ops': 'Ground Operations'
 };
 
 export const TYPE_RATINGS = [
@@ -73,11 +61,42 @@ export const TYPE_RATINGS = [
   'Cessna Citation', 'Gulfstream', 'Bombardier Global'
 ];
 
-export const LICENSES = [
-  'EASA Part-66 B1.1', 'EASA Part-66 B1.3', 'EASA Part-66 B2',
-  'ATPL(A)', 'CPL(A)', 'MPL', 'PPL(A)',
-  'EASA Cabin Crew Attestation', 'FAA A&P License',
-  'IATA DGR', 'ETOPS', 'PBN', 'LVO'
+// Licenses by role
+export const TECHNICIAN_LICENSES = [
+  'EASA Part-66 B1.1',
+  'EASA Part-66 B1.2',
+  'EASA Part-66 B1.3',
+  'EASA Part-66 B1.4',
+  'EASA Part-66 B2',
+  'EASA Part-66 B3',
+  'EASA Part-66 C',
+  'FAA A&P License'
+];
+
+export const PILOT_LICENSES = [
+  'ATPL(A)',
+  'CPL(A)',
+  'MPL',
+  'PPL(A)',
+  'IR(A)',
+  'ATPL(H)',
+  'CPL(H)',
+  'PPL(H)'
+];
+
+export const CABIN_CREW_LICENSES = [
+  'EASA Cabin Crew Attestation',
+  'SEP (Safety Equipment & Procedures)',
+  'First Aid Certificate',
+  'CRM Training'
+];
+
+export const GROUND_OPS_LICENSES = [
+  'IATA DGR',
+  'Ramp Agent Certificate',
+  'Load Control Certificate',
+  'Passenger Handling Certificate',
+  'Baggage Handling Certificate'
 ];
 
 export const LANGUAGES = [
@@ -121,3 +140,14 @@ export const EUROPEAN_CITIES: { [country: string]: string[] } = {
   'Horvaatia': ['Zagreb', 'Split', 'Dubrovnik'],
   'Rumeenia': ['Bukarest', 'Cluj-Napoca']
 };
+
+// Helper to get licenses by role
+export function getLicensesByRole(role: FreelancerRole): string[] {
+  switch (role) {
+    case 'technician': return TECHNICIAN_LICENSES;
+    case 'pilot': return PILOT_LICENSES;
+    case 'cabin-crew': return CABIN_CREW_LICENSES;
+    case 'ground-ops': return GROUND_OPS_LICENSES;
+    default: return [];
+  }
+}

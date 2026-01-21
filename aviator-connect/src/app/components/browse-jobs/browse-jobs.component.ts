@@ -6,9 +6,7 @@ import { DataService } from '../../services/data.service';
 import {
   JobPosting,
   FreelancerRole,
-  CompanyType,
   ROLE_LABELS,
-  COMPANY_TYPE_LABELS,
   TYPE_RATINGS,
   EUROPEAN_COUNTRIES
 } from '../../models/models';
@@ -84,17 +82,6 @@ import {
                 </div>
 
                 <div>
-                  <label class="block text-sm text-gray-600 mb-1">Ettevõtte tüüp</label>
-                  <select
-                    [(ngModel)]="filters.companyType"
-                    (ngModelChange)="applyFilters()"
-                    class="w-full bg-white border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-navy-900">
-                    <option value="">Kõik tüübid</option>
-                    <option *ngFor="let type of companyTypes" [value]="type.value">{{ type.label }}</option>
-                  </select>
-                </div>
-
-                <div>
                   <label class="block text-sm text-gray-600 mb-1">Type Rating</label>
                   <select
                     [(ngModel)]="filters.typeRating"
@@ -140,9 +127,6 @@ import {
                     </div>
                     <p class="text-blue-600 font-medium text-sm">{{ job.companyName }}</p>
                   </div>
-                  <span class="badge badge-gray">
-                    {{ getCompanyTypeLabel(job.companyType) }}
-                  </span>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-3">
@@ -157,7 +141,7 @@ import {
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
-                    {{ formatDate(job.startDate) }} - {{ formatDate(job.endDate) }}
+                    {{ formatDate(job.startDate) }}{{ job.endDate ? ' - ' + formatDate(job.endDate) : '' }}
                   </div>
                   <div *ngIf="job.salary" class="flex items-center gap-1 text-green-600 font-medium">
                     {{ job.salary }}
@@ -214,13 +198,11 @@ export class BrowseJobsComponent implements OnInit {
   filters = {
     role: '',
     country: '',
-    companyType: '',
     typeRating: '',
     accommodationProvided: false
   };
 
   roleOptions = Object.entries(ROLE_LABELS).map(([value, label]) => ({ value, label }));
-  companyTypes = Object.entries(COMPANY_TYPE_LABELS).map(([value, label]) => ({ value, label }));
   countries = EUROPEAN_COUNTRIES;
   typeRatings = TYPE_RATINGS;
 
@@ -249,7 +231,6 @@ export class BrowseJobsComponent implements OnInit {
 
     if (this.filters.role) searchFilters.role = this.filters.role;
     if (this.filters.country) searchFilters.country = this.filters.country;
-    if (this.filters.companyType) searchFilters.companyType = this.filters.companyType;
     if (this.filters.typeRating) searchFilters.typeRating = this.filters.typeRating;
     if (this.filters.accommodationProvided) searchFilters.accommodationProvided = true;
 
@@ -260,7 +241,6 @@ export class BrowseJobsComponent implements OnInit {
     this.filters = {
       role: '',
       country: '',
-      companyType: '',
       typeRating: '',
       accommodationProvided: false
     };
@@ -269,10 +249,6 @@ export class BrowseJobsComponent implements OnInit {
 
   getRoleLabel(role: FreelancerRole): string {
     return ROLE_LABELS[role] || role;
-  }
-
-  getCompanyTypeLabel(type: CompanyType): string {
-    return COMPANY_TYPE_LABELS[type] || type;
   }
 
   formatDate(dateStr: string): string {

@@ -5,14 +5,12 @@ import { Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import {
   FreelancerRole,
-  CompanyType,
   ROLE_LABELS,
-  COMPANY_TYPE_LABELS,
   TYPE_RATINGS,
-  LICENSES,
   LANGUAGES,
   EUROPEAN_COUNTRIES,
-  EUROPEAN_CITIES
+  EUROPEAN_CITIES,
+  getLicensesByRole
 } from '../../models/models';
 
 @Component({
@@ -59,27 +57,15 @@ import {
             </h2>
 
             <div class="grid md:grid-cols-2 gap-4">
-              <div>
+              <div class="md:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Ettevõtte nimi *</label>
                 <input
                   type="text"
                   [(ngModel)]="form.companyName"
                   name="companyName"
                   required
-                  class="w-full rounded-md px-3 py-2 text-sm"
+                  class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-navy-900 transition-colors"
                   placeholder="Ettevõtte nimi">
-              </div>
-
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Ettevõtte tüüp *</label>
-                <select
-                  [(ngModel)]="form.companyType"
-                  name="companyType"
-                  required
-                  class="w-full rounded-md px-3 py-2 text-sm">
-                  <option value="" disabled>Vali tüüp</option>
-                  <option *ngFor="let type of companyTypes" [value]="type.value">{{ type.label }}</option>
-                </select>
               </div>
 
               <div>
@@ -89,7 +75,7 @@ import {
                   name="country"
                   required
                   (ngModelChange)="onCountryChange()"
-                  class="w-full rounded-md px-3 py-2 text-sm">
+                  class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 focus:outline-none focus:border-navy-900 transition-colors">
                   <option value="" disabled>Vali riik</option>
                   <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
                 </select>
@@ -102,7 +88,7 @@ import {
                   name="location"
                   required
                   [disabled]="!form.country"
-                  class="w-full rounded-md px-3 py-2 text-sm">
+                  class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 focus:outline-none focus:border-navy-900 transition-colors disabled:bg-gray-100 disabled:text-gray-500">
                   <option value="" disabled>Vali linn</option>
                   <option *ngFor="let city of availableCities" [value]="city">{{ city }}</option>
                 </select>
@@ -126,7 +112,8 @@ import {
                   [(ngModel)]="form.roleType"
                   name="roleType"
                   required
-                  class="w-full rounded-md px-3 py-2 text-sm">
+                  (ngModelChange)="onRoleChange()"
+                  class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 focus:outline-none focus:border-navy-900 transition-colors">
                   <option value="" disabled>Vali roll</option>
                   <option *ngFor="let role of roleOptions" [value]="role.value">{{ role.label }}</option>
                 </select>
@@ -138,7 +125,7 @@ import {
                   type="text"
                   [(ngModel)]="form.salary"
                   name="salary"
-                  class="w-full rounded-md px-3 py-2 text-sm"
+                  class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-navy-900 transition-colors"
                   placeholder="nt. 50-60 EUR/h">
               </div>
 
@@ -149,17 +136,16 @@ import {
                   [(ngModel)]="form.startDate"
                   name="startDate"
                   required
-                  class="w-full rounded-md px-3 py-2 text-sm">
+                  class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 focus:outline-none focus:border-navy-900 transition-colors">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Lõppkuupäev *</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Lõppkuupäev <span class="text-gray-400 font-normal">(valikuline)</span></label>
                 <input
                   type="date"
                   [(ngModel)]="form.endDate"
                   name="endDate"
-                  required
-                  class="w-full rounded-md px-3 py-2 text-sm">
+                  class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 focus:outline-none focus:border-navy-900 transition-colors">
               </div>
 
               <div class="md:col-span-2 flex flex-wrap gap-6">
@@ -193,63 +179,72 @@ import {
             </div>
           </div>
 
-          <!-- Requirements -->
-          <div class="bg-white border border-gray-200 rounded-lg p-6">
+          <!-- Type Ratings (only for pilots) -->
+          <div *ngIf="form.roleType === 'pilot'" class="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 class="font-semibold text-navy-900 mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+              </svg>
+              Nõutavad Type Ratings
+            </h2>
+
+            <div class="flex flex-wrap gap-2">
+              <button
+                *ngFor="let rating of typeRatings"
+                type="button"
+                (click)="toggleTypeRating(rating)"
+                [class]="'px-3 py-1.5 rounded text-sm border transition-all ' +
+                  (form.typeRatings.includes(rating)
+                    ? 'bg-blue-100 text-blue-800 border-blue-300'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400')">
+                {{ rating }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Licenses (based on role) -->
+          <div *ngIf="form.roleType" class="bg-white border border-gray-200 rounded-lg p-6">
             <h2 class="font-semibold text-navy-900 mb-4 flex items-center gap-2">
               <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
               </svg>
-              Nõuded
+              Nõutavad litsentsid
             </h2>
 
-            <div class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Nõutavad Type Ratings</label>
-                <div class="flex flex-wrap gap-2">
-                  <button
-                    *ngFor="let rating of typeRatings"
-                    type="button"
-                    (click)="toggleTypeRating(rating)"
-                    [class]="'px-3 py-1.5 rounded text-sm border transition-all ' +
-                      (form.typeRatings.includes(rating)
-                        ? 'bg-blue-100 text-blue-800 border-blue-300'
-                        : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400')">
-                    {{ rating }}
-                  </button>
-                </div>
-              </div>
+            <div class="flex flex-wrap gap-2">
+              <button
+                *ngFor="let license of availableLicenses"
+                type="button"
+                (click)="toggleLicense(license)"
+                [class]="'px-3 py-1.5 rounded text-sm border transition-all ' +
+                  (form.licenses.includes(license)
+                    ? 'bg-indigo-100 text-indigo-800 border-indigo-300'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400')">
+                {{ license }}
+              </button>
+            </div>
+          </div>
 
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Nõutavad litsentsid</label>
-                <div class="flex flex-wrap gap-2">
-                  <button
-                    *ngFor="let license of licenses"
-                    type="button"
-                    (click)="toggleLicense(license)"
-                    [class]="'px-3 py-1.5 rounded text-sm border transition-all ' +
-                      (form.licenses.includes(license)
-                        ? 'bg-indigo-100 text-indigo-800 border-indigo-300'
-                        : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400')">
-                    {{ license }}
-                  </button>
-                </div>
-              </div>
+          <!-- Languages -->
+          <div class="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 class="font-semibold text-navy-900 mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+              </svg>
+              Nõutavad keeled
+            </h2>
 
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Nõutavad keeled</label>
-                <div class="flex flex-wrap gap-2">
-                  <button
-                    *ngFor="let lang of languages"
-                    type="button"
-                    (click)="toggleLanguage(lang)"
-                    [class]="'px-3 py-1.5 rounded text-sm border transition-all ' +
-                      (form.requiredLanguages.includes(lang)
-                        ? 'bg-green-100 text-green-800 border-green-300'
-                        : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400')">
-                    {{ lang }}
-                  </button>
-                </div>
-              </div>
+            <div class="flex flex-wrap gap-2">
+              <button
+                *ngFor="let lang of languages"
+                type="button"
+                (click)="toggleLanguage(lang)"
+                [class]="'px-3 py-1.5 rounded text-sm border transition-all ' +
+                  (form.requiredLanguages.includes(lang)
+                    ? 'bg-green-100 text-green-800 border-green-300'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400')">
+                {{ lang }}
+              </button>
             </div>
           </div>
 
@@ -270,7 +265,7 @@ import {
                   name="description"
                   required
                   rows="4"
-                  class="w-full rounded-md px-3 py-2 text-sm resize-none"
+                  class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-navy-900 transition-colors resize-none"
                   placeholder="Kirjelda projekti, ülesandeid, töökeskkonda..."></textarea>
               </div>
 
@@ -282,7 +277,7 @@ import {
                     [(ngModel)]="form.contactEmail"
                     name="contactEmail"
                     required
-                    class="w-full rounded-md px-3 py-2 text-sm"
+                    class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-navy-900 transition-colors"
                     placeholder="hr@ettevote.com">
                 </div>
 
@@ -292,7 +287,7 @@ import {
                     type="tel"
                     [(ngModel)]="form.contactPhone"
                     name="contactPhone"
-                    class="w-full rounded-md px-3 py-2 text-sm"
+                    class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-navy-900 transition-colors"
                     placeholder="+372 ...">
                 </div>
               </div>
@@ -304,13 +299,13 @@ import {
             <button
               type="button"
               (click)="navigateTo('/')"
-              class="flex-1 btn-secondary py-3 rounded font-medium text-gray-700">
+              class="flex-1 bg-white border border-gray-300 py-4 rounded text-gray-700 font-medium hover:bg-gray-50 transition-all">
               Tühista
             </button>
             <button
               type="submit"
               [disabled]="!isFormValid()"
-              class="flex-1 btn-primary py-3 rounded text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed">
+              class="flex-1 btn-primary py-4 rounded text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed">
               Postita tööpakkumine
             </button>
           </div>
@@ -338,7 +333,6 @@ import {
 export class JobFormComponent {
   form = {
     companyName: '',
-    companyType: '' as CompanyType | '',
     country: '',
     location: '',
     roleType: '' as FreelancerRole | '',
@@ -357,11 +351,10 @@ export class JobFormComponent {
   };
 
   roleOptions = Object.entries(ROLE_LABELS).map(([value, label]) => ({ value, label }));
-  companyTypes = Object.entries(COMPANY_TYPE_LABELS).map(([value, label]) => ({ value, label }));
   countries = EUROPEAN_COUNTRIES;
   availableCities: string[] = [];
   typeRatings = TYPE_RATINGS;
-  licenses = LICENSES;
+  availableLicenses: string[] = [];
   languages = LANGUAGES;
 
   showSuccess = false;
@@ -374,6 +367,19 @@ export class JobFormComponent {
   onCountryChange(): void {
     this.form.location = '';
     this.availableCities = EUROPEAN_CITIES[this.form.country] || [];
+  }
+
+  onRoleChange(): void {
+    // Clear existing selections when role changes
+    this.form.licenses = [];
+    this.form.typeRatings = [];
+
+    // Update available licenses based on role
+    if (this.form.roleType) {
+      this.availableLicenses = getLicensesByRole(this.form.roleType as FreelancerRole);
+    } else {
+      this.availableLicenses = [];
+    }
   }
 
   toggleTypeRating(rating: string): void {
@@ -406,12 +412,10 @@ export class JobFormComponent {
   isFormValid(): boolean {
     return !!(
       this.form.companyName &&
-      this.form.companyType &&
       this.form.country &&
       this.form.location &&
       this.form.roleType &&
       this.form.startDate &&
-      this.form.endDate &&
       this.form.description &&
       this.form.contactEmail
     );
@@ -422,7 +426,6 @@ export class JobFormComponent {
 
     this.dataService.addJob({
       companyName: this.form.companyName,
-      companyType: this.form.companyType as CompanyType,
       location: this.form.location,
       country: this.form.country,
       roleType: this.form.roleType as FreelancerRole,
@@ -433,7 +436,7 @@ export class JobFormComponent {
       },
       requiredLanguages: this.form.requiredLanguages,
       startDate: this.form.startDate,
-      endDate: this.form.endDate,
+      endDate: this.form.endDate || undefined,
       accommodationProvided: this.form.accommodationProvided,
       travelProvided: this.form.travelProvided,
       description: this.form.description,

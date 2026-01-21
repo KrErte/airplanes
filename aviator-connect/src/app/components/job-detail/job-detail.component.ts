@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataService } from '../../services/data.service';
-import { JobPosting, ROLE_LABELS, COMPANY_TYPE_LABELS } from '../../models/models';
+import { JobPosting, ROLE_LABELS } from '../../models/models';
 
 @Component({
   selector: 'app-job-detail',
@@ -49,7 +49,6 @@ import { JobPosting, ROLE_LABELS, COMPANY_TYPE_LABELS } from '../../models/model
                 </span>
               </div>
               <p class="text-lg text-blue-600 mb-1">{{ job.companyName }}</p>
-              <p class="text-gray-500 text-sm">{{ getCompanyTypeLabel(job.companyType) }}</p>
 
               <div class="flex flex-wrap items-center gap-4 text-gray-500 text-sm mt-4">
                 <div class="flex items-center gap-2">
@@ -63,7 +62,7 @@ import { JobPosting, ROLE_LABELS, COMPANY_TYPE_LABELS } from '../../models/model
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                   </svg>
-                  {{ formatDate(job.startDate) }} - {{ formatDate(job.endDate) }}
+                  {{ formatDate(job.startDate) }}{{ job.endDate ? ' - ' + formatDate(job.endDate) : '' }}
                 </div>
                 <div *ngIf="job.salary" class="flex items-center gap-2 text-green-600 font-medium">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -293,10 +292,6 @@ export class JobDetailComponent implements OnInit {
     return ROLE_LABELS[role as keyof typeof ROLE_LABELS] || role;
   }
 
-  getCompanyTypeLabel(type: string): string {
-    return COMPANY_TYPE_LABELS[type as keyof typeof COMPANY_TYPE_LABELS] || type;
-  }
-
   formatDate(dateStr: string): string {
     const date = new Date(dateStr);
     return date.toLocaleDateString('et-EE', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -305,6 +300,11 @@ export class JobDetailComponent implements OnInit {
   calculateDuration(): string {
     if (!this.job) return '';
     const start = new Date(this.job.startDate);
+
+    if (!this.job.endDate) {
+      return 'Tähtajatu';
+    }
+
     const end = new Date(this.job.endDate);
     const diffTime = Math.abs(end.getTime() - start.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
