@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Freelancer, JobPosting, FreelancerRole, CompanyType } from '../models/models';
+import { Freelancer, JobPosting, FreelancerRole } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +44,15 @@ export class DataService {
 
   private saveJobs(): void {
     localStorage.setItem(this.JOBS_KEY, JSON.stringify(this.jobsSubject.value));
+  }
+
+  clearAndReloadMockData(): void {
+    localStorage.removeItem(this.FREELANCERS_KEY);
+    localStorage.removeItem(this.JOBS_KEY);
+    this.freelancersSubject.next(this.getMockFreelancers());
+    this.jobsSubject.next(this.getMockJobs());
+    this.saveFreelancers();
+    this.saveJobs();
   }
 
   addFreelancer(freelancer: Omit<Freelancer, 'id' | 'createdAt'>): Freelancer {
@@ -113,7 +122,6 @@ export class DataService {
   searchJobs(filters: {
     role?: FreelancerRole;
     country?: string;
-    companyType?: CompanyType;
     typeRating?: string;
     accommodationProvided?: boolean;
   }): JobPosting[] {
@@ -124,9 +132,6 @@ export class DataService {
     }
     if (filters.country) {
       results = results.filter(j => j.country.toLowerCase().includes(filters.country!.toLowerCase()));
-    }
-    if (filters.companyType) {
-      results = results.filter(j => j.companyType === filters.companyType);
     }
     if (filters.typeRating) {
       results = results.filter(j => j.requiredQualifications.typeRatings.some(tr =>
@@ -169,10 +174,10 @@ export class DataService {
         location: 'Tallinn',
         country: 'Eesti',
         willingToTravel: true,
-        role: 'part66-b1',
+        role: 'technician',
         qualifications: {
           typeRatings: ['A320', 'A320neo', 'B737'],
-          licenses: ['EASA Part-66 B1.1', 'ETOPS'],
+          licenses: ['EASA Part-66 B1.1'],
           certifications: ['IATA DGR']
         },
         languages: ['Eesti', 'Inglise', 'Vene'],
@@ -190,11 +195,11 @@ export class DataService {
         location: 'Helsinki',
         country: 'Soome',
         willingToTravel: true,
-        role: 'part66-b2',
+        role: 'technician',
         qualifications: {
           typeRatings: ['A350', 'A330', 'B787'],
           licenses: ['EASA Part-66 B2'],
-          certifications: ['ETOPS', 'PBN']
+          certifications: []
         },
         languages: ['Soome', 'Inglise', 'Rootsi'],
         availability: this.generateAvailability(0.6),
@@ -214,7 +219,7 @@ export class DataService {
         role: 'pilot',
         qualifications: {
           typeRatings: ['A320', 'A321', 'E190/195'],
-          licenses: ['ATPL(A)', 'ETOPS', 'PBN', 'LVO'],
+          licenses: ['ATPL(A)', 'IR(A)'],
           certifications: []
         },
         languages: ['Rootsi', 'Inglise', 'Norra'],
@@ -234,9 +239,9 @@ export class DataService {
         willingToTravel: true,
         role: 'cabin-crew',
         qualifications: {
-          typeRatings: ['A380', 'A350', 'B747', 'B777'],
-          licenses: ['EASA Cabin Crew Attestation'],
-          certifications: ['IATA DGR']
+          typeRatings: [],
+          licenses: ['EASA Cabin Crew Attestation', 'First Aid Certificate'],
+          certifications: []
         },
         languages: ['Saksa', 'Inglise', 'Prantsuse', 'Hispaania'],
         availability: this.generateAvailability(0.8),
@@ -252,11 +257,11 @@ export class DataService {
         location: 'Varssavi',
         country: 'Poola',
         willingToTravel: true,
-        role: 'part66-b1b2',
+        role: 'technician',
         qualifications: {
           typeRatings: ['B737', 'B737 MAX', 'E170/175'],
           licenses: ['EASA Part-66 B1.1', 'EASA Part-66 B2'],
-          certifications: ['IATA DGR', 'ETOPS']
+          certifications: ['IATA DGR']
         },
         languages: ['Poola', 'Inglise', 'Saksa'],
         availability: this.generateAvailability(0.65),
@@ -276,8 +281,8 @@ export class DataService {
         role: 'ground-ops',
         qualifications: {
           typeRatings: [],
-          licenses: [],
-          certifications: ['IATA DGR', 'ISAGO']
+          licenses: ['IATA DGR', 'Ramp Agent Certificate'],
+          certifications: []
         },
         languages: ['Hispaania', 'Inglise', 'Portugali'],
         availability: this.generateAvailability(0.9),
@@ -293,7 +298,7 @@ export class DataService {
         location: 'Milano',
         country: 'Itaalia',
         willingToTravel: true,
-        role: 'part66-b1',
+        role: 'technician',
         qualifications: {
           typeRatings: ['A320', 'A319', 'ATR 42/72'],
           licenses: ['EASA Part-66 B1.1', 'EASA Part-66 B1.3'],
@@ -314,15 +319,15 @@ export class DataService {
         location: 'Oslo',
         country: 'Norra',
         willingToTravel: true,
-        role: 'dispatcher',
+        role: 'ground-ops',
         qualifications: {
           typeRatings: [],
-          licenses: [],
-          certifications: ['Flight Dispatcher License', 'IATA DGR']
+          licenses: ['Load Control Certificate', 'IATA DGR'],
+          certifications: []
         },
         languages: ['Norra', 'Inglise', 'Rootsi', 'Taani'],
         availability: this.generateAvailability(0.75),
-        bio: 'Lennudispetšer OCC kogemusega. Norwegian ja Widerøe taust. ETOPS dispatch ja irregular operations.',
+        bio: 'Load control ja dispatch spetsialist. Norwegian ja Widerøe taust. OCC operations kogemus.',
         email: 'anna.johansson@email.no',
         phone: '+47 912 34 567',
         yearsExperience: 7,
@@ -334,11 +339,11 @@ export class DataService {
         location: 'Amsterdam',
         country: 'Holland',
         willingToTravel: true,
-        role: 'part66-b2',
+        role: 'technician',
         qualifications: {
           typeRatings: ['B777', 'B787', 'A330'],
           licenses: ['EASA Part-66 B2', 'FAA A&P License'],
-          certifications: ['ETOPS']
+          certifications: []
         },
         languages: ['Hollandi', 'Inglise', 'Saksa'],
         availability: this.generateAvailability(0.6),
@@ -355,7 +360,7 @@ export class DataService {
         location: 'Riia',
         country: 'Läti',
         willingToTravel: true,
-        role: 'part66-b1',
+        role: 'technician',
         qualifications: {
           typeRatings: ['A220', 'Dash 8', 'CRJ'],
           licenses: ['EASA Part-66 B1.1'],
@@ -379,7 +384,7 @@ export class DataService {
         role: 'pilot',
         qualifications: {
           typeRatings: ['A350', 'A330', 'A320'],
-          licenses: ['ATPL(A)', 'ETOPS', 'PBN', 'LVO'],
+          licenses: ['ATPL(A)', 'IR(A)'],
           certifications: []
         },
         languages: ['Prantsuse', 'Inglise'],
@@ -399,8 +404,8 @@ export class DataService {
         willingToTravel: true,
         role: 'cabin-crew',
         qualifications: {
-          typeRatings: ['A320', 'A321', 'A330'],
-          licenses: ['EASA Cabin Crew Attestation'],
+          typeRatings: [],
+          licenses: ['EASA Cabin Crew Attestation', 'SEP (Safety Equipment & Procedures)'],
           certifications: []
         },
         languages: ['Taani', 'Inglise', 'Saksa', 'Rootsi'],
@@ -417,11 +422,11 @@ export class DataService {
         location: 'Bukarest',
         country: 'Rumeenia',
         willingToTravel: true,
-        role: 'part66-b1b2',
+        role: 'technician',
         qualifications: {
           typeRatings: ['A320', 'B737', 'ATR 42/72'],
           licenses: ['EASA Part-66 B1.1', 'EASA Part-66 B2'],
-          certifications: ['IATA DGR', 'ETOPS']
+          certifications: ['IATA DGR']
         },
         languages: ['Rumeenia', 'Inglise', 'Prantsuse', 'Itaalia'],
         availability: this.generateAvailability(0.8),
@@ -438,11 +443,11 @@ export class DataService {
         location: 'Dublin',
         country: 'Iirimaa',
         willingToTravel: true,
-        role: 'part66-b1',
+        role: 'technician',
         qualifications: {
           typeRatings: ['B737', 'B737 MAX', 'A320'],
           licenses: ['EASA Part-66 B1.1'],
-          certifications: ['ETOPS', 'IATA DGR']
+          certifications: []
         },
         languages: ['Inglise'],
         availability: this.generateAvailability(0.65),
@@ -461,10 +466,9 @@ export class DataService {
       {
         id: 'j1',
         companyName: 'Lufthansa Technik',
-        companyType: 'mro',
         location: 'Hamburg',
         country: 'Saksamaa',
-        roleType: 'part66-b1',
+        roleType: 'technician',
         requiredQualifications: {
           typeRatings: ['A320', 'A320neo'],
           licenses: ['EASA Part-66 B1.1'],
@@ -485,14 +489,13 @@ export class DataService {
       {
         id: 'j2',
         companyName: 'Finnair',
-        companyType: 'airline',
         location: 'Helsinki',
         country: 'Soome',
-        roleType: 'part66-b2',
+        roleType: 'technician',
         requiredQualifications: {
           typeRatings: ['A350'],
           licenses: ['EASA Part-66 B2'],
-          certifications: ['ETOPS']
+          certifications: []
         },
         requiredLanguages: ['Inglise'],
         startDate: '2024-04-15',
@@ -508,10 +511,9 @@ export class DataService {
       {
         id: 'j3',
         companyName: 'Ryanair',
-        companyType: 'airline',
         location: 'Dublin',
         country: 'Iirimaa',
-        roleType: 'part66-b1',
+        roleType: 'technician',
         requiredQualifications: {
           typeRatings: ['B737', 'B737 MAX'],
           licenses: ['EASA Part-66 B1.1'],
@@ -531,10 +533,9 @@ export class DataService {
       {
         id: 'j4',
         companyName: 'SR Technics',
-        companyType: 'mro',
         location: 'Zürich',
         country: 'Šveits',
-        roleType: 'part66-b1b2',
+        roleType: 'technician',
         requiredQualifications: {
           typeRatings: ['A330', 'A340'],
           licenses: ['EASA Part-66 B1.1', 'EASA Part-66 B2'],
@@ -555,12 +556,11 @@ export class DataService {
       {
         id: 'j5',
         companyName: 'Norwegian Air',
-        companyType: 'airline',
         location: 'Oslo',
         country: 'Norra',
         roleType: 'cabin-crew',
         requiredQualifications: {
-          typeRatings: ['B737'],
+          typeRatings: [],
           licenses: ['EASA Cabin Crew Attestation'],
           certifications: []
         },
@@ -578,37 +578,34 @@ export class DataService {
       {
         id: 'j6',
         companyName: 'Iberia',
-        companyType: 'airline',
         location: 'Madrid',
         country: 'Hispaania',
         roleType: 'pilot',
         requiredQualifications: {
           typeRatings: ['A320', 'A321'],
-          licenses: ['ATPL(A)', 'ETOPS'],
+          licenses: ['ATPL(A)'],
           certifications: []
         },
         requiredLanguages: ['Inglise', 'Hispaania'],
         startDate: '2024-05-01',
-        endDate: '2025-04-30',
-        accommodationProvided: false,
-        travelProvided: false,
         description: 'A320 First Officers 12-kuuliseks lepinguks. Madrid basing. Min 1500h total time, 500h on type.',
         contactEmail: 'flightops@iberia.es',
         salary: 'Negotiable',
         urgent: false,
+        accommodationProvided: false,
+        travelProvided: false,
         createdAt: new Date('2024-03-08')
       },
       {
         id: 'j7',
         companyName: 'Swissport',
-        companyType: 'handling',
         location: 'Amsterdam',
         country: 'Holland',
         roleType: 'ground-ops',
         requiredQualifications: {
           typeRatings: [],
-          licenses: [],
-          certifications: ['IATA DGR']
+          licenses: ['IATA DGR'],
+          certifications: []
         },
         requiredLanguages: ['Inglise', 'Hollandi'],
         startDate: '2024-04-15',
@@ -624,10 +621,9 @@ export class DataService {
       {
         id: 'j8',
         companyName: 'airBaltic',
-        companyType: 'airline',
         location: 'Riia',
         country: 'Läti',
-        roleType: 'part66-b1',
+        roleType: 'technician',
         requiredQualifications: {
           typeRatings: ['A220'],
           licenses: ['EASA Part-66 B1.1'],
@@ -648,14 +644,13 @@ export class DataService {
       {
         id: 'j9',
         companyName: 'KLM Engineering',
-        companyType: 'mro',
         location: 'Amsterdam',
         country: 'Holland',
-        roleType: 'part66-b2',
+        roleType: 'technician',
         requiredQualifications: {
           typeRatings: ['B787'],
           licenses: ['EASA Part-66 B2'],
-          certifications: ['ETOPS']
+          certifications: []
         },
         requiredLanguages: ['Inglise'],
         startDate: '2024-05-15',
@@ -671,12 +666,11 @@ export class DataService {
       {
         id: 'j10',
         companyName: 'TAP Air Portugal',
-        companyType: 'airline',
         location: 'Lissabon',
         country: 'Portugal',
         roleType: 'cabin-crew',
         requiredQualifications: {
-          typeRatings: ['A330', 'A321'],
+          typeRatings: [],
           licenses: ['EASA Cabin Crew Attestation'],
           certifications: []
         },

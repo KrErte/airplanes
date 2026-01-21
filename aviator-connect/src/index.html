@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="et" class="dark">
+<html lang="et">
 <head>
   <meta charset="utf-8">
   <title>AviatorConnect - Lennunduse Freelance Platvorm</title>
@@ -9,21 +9,20 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            aviation: {
-              50: '#f0f9ff',
-              100: '#e0f2fe',
-              200: '#bae6fd',
-              300: '#7dd3fc',
-              400: '#38bdf8',
-              500: '#0ea5e9',
-              600: '#0284c7',
-              700: '#0369a1',
-              800: '#075985',
-              900: '#0c4a6e',
+            navy: {
+              50: '#f0f4f8',
+              100: '#d9e2ec',
+              200: '#bcccdc',
+              300: '#9fb3c8',
+              400: '#829ab1',
+              500: '#627d98',
+              600: '#486581',
+              700: '#334e68',
+              800: '#243b53',
+              900: '#102a43',
             }
           }
         }
@@ -31,93 +30,107 @@
     }
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
-      min-height: 100vh;
-    }
-
-    .glass {
-      background: rgba(30, 41, 59, 0.7);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(148, 163, 184, 0.1);
-    }
-
-    .glass-light {
-      background: rgba(51, 65, 85, 0.5);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(148, 163, 184, 0.15);
-    }
-
-    .glass-card {
-      background: rgba(30, 41, 59, 0.6);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(148, 163, 184, 0.1);
-      transition: all 0.3s ease;
-    }
-
-    .glass-card:hover {
-      background: rgba(51, 65, 85, 0.7);
-      border-color: rgba(56, 189, 248, 0.3);
-      transform: translateY(-2px);
-    }
-
-    .gradient-text {
-      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
-      transition: all 0.3s ease;
+      background-color: #102a43;
+      transition: background-color 0.2s ease;
     }
 
     .btn-primary:hover {
-      background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
-      transform: translateY(-1px);
-      box-shadow: 0 10px 40px -10px rgba(14, 165, 233, 0.5);
+      background-color: #243b53;
     }
 
-    .animate-float {
-      animation: float 6s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
-
-    .calendar-day {
+    .btn-secondary {
+      background-color: #fff;
+      border: 1px solid #d1d5db;
       transition: all 0.2s ease;
     }
 
-    .calendar-day:hover {
-      transform: scale(1.1);
+    .btn-secondary:hover {
+      background-color: #f9fafb;
+      border-color: #9ca3af;
     }
 
-    ::-webkit-scrollbar {
-      width: 8px;
+    .card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      transition: box-shadow 0.2s ease;
     }
 
-    ::-webkit-scrollbar-track {
-      background: rgba(30, 41, 59, 0.5);
+    .card:hover {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
 
-    ::-webkit-scrollbar-thumb {
-      background: rgba(56, 189, 248, 0.3);
-      border-radius: 4px;
+    .nav-link {
+      color: #4b5563;
+      transition: color 0.2s ease;
     }
 
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(56, 189, 248, 0.5);
+    .nav-link:hover {
+      color: #102a43;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+    }
+
+    .badge-blue {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+
+    .badge-green {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+
+    .badge-gray {
+      background-color: #f3f4f6;
+      color: #4b5563;
+    }
+
+    .badge-amber {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    input, select, textarea {
+      background-color: #ffffff !important;
+      color: #1f2937 !important;
+      border: 1px solid #d1d5db;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #9ca3af !important;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #102a43;
+      box-shadow: 0 0 0 3px rgba(16, 42, 67, 0.1);
+    }
+
+    select option {
+      background-color: #ffffff;
+      color: #1f2937;
+    }
+
+    input:disabled, select:disabled {
+      background-color: #f3f4f6 !important;
+      color: #6b7280 !important;
     }
   </style>
 </head>
-<body class="text-slate-200">
+<body class="text-gray-800">
   <app-root></app-root>
 </body>
 </html>
