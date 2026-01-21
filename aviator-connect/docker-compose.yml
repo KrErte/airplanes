@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  aviator-connect:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aviator-connect
+    ports:
+      - "8080:80"
+    restart: unless-stopped
