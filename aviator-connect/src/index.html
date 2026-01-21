@@ -103,14 +103,30 @@
     }
 
     input, select, textarea {
+      background-color: #ffffff !important;
+      color: #1f2937 !important;
       border: 1px solid #d1d5db;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #9ca3af !important;
     }
 
     input:focus, select:focus, textarea:focus {
       outline: none;
       border-color: #102a43;
       box-shadow: 0 0 0 3px rgba(16, 42, 67, 0.1);
+    }
+
+    select option {
+      background-color: #ffffff;
+      color: #1f2937;
+    }
+
+    input:disabled, select:disabled {
+      background-color: #f3f4f6 !important;
+      color: #6b7280 !important;
     }
   </style>
 </head>

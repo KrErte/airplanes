@@ -19,36 +19,38 @@ import {
   imports: [CommonModule, FormsModule],
   template: `
     <!-- Navigation -->
-    <nav class="glass fixed top-0 left-0 right-0 z-50 px-4 py-3">
-      <div class="max-w-7xl mx-auto flex items-center justify-between">
-        <div class="flex items-center gap-3 cursor-pointer" (click)="navigateTo('/')">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400 to-indigo-500 flex items-center justify-center">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-            </svg>
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2 cursor-pointer" (click)="navigateTo('/')">
+            <div class="w-8 h-8 bg-navy-900 rounded flex items-center justify-center">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+              </svg>
+            </div>
+            <span class="text-lg font-semibold text-navy-900">AviatorConnect</span>
           </div>
-          <span class="text-xl font-semibold gradient-text">AviatorConnect</span>
+          <button (click)="navigateTo('/')" class="text-gray-500 hover:text-navy-900 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
         </div>
-        <button (click)="navigateTo('/')" class="text-slate-400 hover:text-white transition-colors">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-          </svg>
-        </button>
       </div>
     </nav>
 
-    <div class="pt-24 pb-12 px-4">
+    <div class="py-8 px-4 bg-gray-50 min-h-screen">
       <div class="max-w-3xl mx-auto">
         <div class="text-center mb-8">
-          <h1 class="text-3xl font-bold text-white mb-2">Loo oma profiil</h1>
-          <p class="text-slate-400">Täida andmed ja hakka kohe tööpakkumisi nägema</p>
+          <h1 class="text-2xl font-bold text-navy-900 mb-2">Loo oma profiil</h1>
+          <p class="text-gray-500">Täida andmed ja hakka kohe tööpakkumisi nägema</p>
         </div>
 
         <form (ngSubmit)="onSubmit()" class="space-y-6">
           <!-- Basic Info -->
-          <div class="glass rounded-2xl p-6">
-            <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-              <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-navy-900 mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
               </svg>
               Põhiandmed
@@ -56,73 +58,73 @@ import {
 
             <div class="grid md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm text-slate-400 mb-1">Täisnimi *</label>
+                <label class="block text-sm text-gray-600 mb-1">Täisnimi *</label>
                 <input
                   type="text"
                   [(ngModel)]="form.name"
                   name="name"
                   required
-                  class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-colors"
+                  class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-navy-900 transition-colors"
                   placeholder="Ees- ja perekonnanimi">
               </div>
 
               <div>
-                <label class="block text-sm text-slate-400 mb-1">Roll *</label>
+                <label class="block text-sm text-gray-600 mb-1">Roll *</label>
                 <select
                   [(ngModel)]="form.role"
                   name="role"
                   required
-                  class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-500 transition-colors">
+                  class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 focus:outline-none focus:border-navy-900 transition-colors">
                   <option value="" disabled>Vali roll</option>
                   <option *ngFor="let role of roleOptions" [value]="role.value">{{ role.label }}</option>
                 </select>
               </div>
 
               <div>
-                <label class="block text-sm text-slate-400 mb-1">Riik *</label>
+                <label class="block text-sm text-gray-600 mb-1">Riik *</label>
                 <select
                   [(ngModel)]="form.country"
                   name="country"
                   required
                   (ngModelChange)="onCountryChange()"
-                  class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-500 transition-colors">
+                  class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 focus:outline-none focus:border-navy-900 transition-colors">
                   <option value="" disabled>Vali riik</option>
                   <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
                 </select>
               </div>
 
               <div>
-                <label class="block text-sm text-slate-400 mb-1">Linn *</label>
+                <label class="block text-sm text-gray-600 mb-1">Linn *</label>
                 <select
                   [(ngModel)]="form.location"
                   name="location"
                   required
                   [disabled]="!form.country"
-                  class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-500 transition-colors disabled:opacity-50">
+                  class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 focus:outline-none focus:border-navy-900 transition-colors disabled:bg-gray-100 disabled:text-gray-500">
                   <option value="" disabled>Vali linn</option>
                   <option *ngFor="let city of availableCities" [value]="city">{{ city }}</option>
                 </select>
               </div>
 
               <div>
-                <label class="block text-sm text-slate-400 mb-1">Kogemus (aastad)</label>
+                <label class="block text-sm text-gray-600 mb-1">Kogemus (aastad)</label>
                 <input
                   type="number"
                   [(ngModel)]="form.yearsExperience"
                   name="yearsExperience"
                   min="0"
                   max="50"
-                  class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-colors"
+                  class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-navy-900 transition-colors"
                   placeholder="0">
               </div>
 
               <div>
-                <label class="block text-sm text-slate-400 mb-1">Tunnitasu (EUR)</label>
+                <label class="block text-sm text-gray-600 mb-1">Tunnitasu (EUR)</label>
                 <input
                   type="text"
                   [(ngModel)]="form.hourlyRate"
                   name="hourlyRate"
-                  class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-colors"
+                  class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-navy-900 transition-colors"
                   placeholder="nt. 45-55">
               </div>
 
@@ -132,17 +134,17 @@ import {
                     type="checkbox"
                     [(ngModel)]="form.willingToTravel"
                     name="willingToTravel"
-                    class="w-5 h-5 rounded border-slate-600 bg-slate-800 text-sky-500 focus:ring-sky-500 focus:ring-offset-0">
-                  <span class="text-slate-300">Olen valmis reisima teistesse riikidesse</span>
+                    class="w-5 h-5 rounded border-gray-300 text-navy-900 focus:ring-navy-900 focus:ring-offset-0">
+                  <span class="text-gray-700">Olen valmis reisima teistesse riikidesse</span>
                 </label>
               </div>
             </div>
           </div>
 
           <!-- Qualifications -->
-          <div class="glass rounded-2xl p-6">
-            <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-              <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-navy-900 mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
               </svg>
               Kvalifikatsioonid
@@ -150,48 +152,48 @@ import {
 
             <div class="space-y-4">
               <div>
-                <label class="block text-sm text-slate-400 mb-2">Type Ratings</label>
+                <label class="block text-sm text-gray-600 mb-2">Type Ratings</label>
                 <div class="flex flex-wrap gap-2">
                   <button
                     *ngFor="let rating of typeRatings"
                     type="button"
                     (click)="toggleTypeRating(rating)"
-                    [class]="'px-3 py-1.5 rounded-lg text-sm transition-all ' +
+                    [class]="'px-3 py-1.5 rounded text-sm transition-all border ' +
                       (form.typeRatings.includes(rating)
-                        ? 'bg-sky-500/30 text-sky-300 border border-sky-500/50'
-                        : 'bg-slate-800/50 text-slate-400 border border-slate-700 hover:border-slate-600')">
+                        ? 'bg-blue-50 text-blue-700 border-blue-300'
+                        : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400')">
                     {{ rating }}
                   </button>
                 </div>
               </div>
 
               <div>
-                <label class="block text-sm text-slate-400 mb-2">Litsentsid ja sertifikaadid</label>
+                <label class="block text-sm text-gray-600 mb-2">Litsentsid ja sertifikaadid</label>
                 <div class="flex flex-wrap gap-2">
                   <button
                     *ngFor="let license of licenses"
                     type="button"
                     (click)="toggleLicense(license)"
-                    [class]="'px-3 py-1.5 rounded-lg text-sm transition-all ' +
+                    [class]="'px-3 py-1.5 rounded text-sm transition-all border ' +
                       (form.licenses.includes(license)
-                        ? 'bg-indigo-500/30 text-indigo-300 border border-indigo-500/50'
-                        : 'bg-slate-800/50 text-slate-400 border border-slate-700 hover:border-slate-600')">
+                        ? 'bg-indigo-50 text-indigo-700 border-indigo-300'
+                        : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400')">
                     {{ license }}
                   </button>
                 </div>
               </div>
 
               <div>
-                <label class="block text-sm text-slate-400 mb-2">Keeled</label>
+                <label class="block text-sm text-gray-600 mb-2">Keeled</label>
                 <div class="flex flex-wrap gap-2">
                   <button
                     *ngFor="let lang of languages"
                     type="button"
                     (click)="toggleLanguage(lang)"
-                    [class]="'px-3 py-1.5 rounded-lg text-sm transition-all ' +
+                    [class]="'px-3 py-1.5 rounded text-sm transition-all border ' +
                       (form.languages.includes(lang)
-                        ? 'bg-emerald-500/30 text-emerald-300 border border-emerald-500/50'
-                        : 'bg-slate-800/50 text-slate-400 border border-slate-700 hover:border-slate-600')">
+                        ? 'bg-green-50 text-green-700 border-green-300'
+                        : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400')">
                     {{ lang }}
                   </button>
                 </div>
@@ -200,22 +202,22 @@ import {
           </div>
 
           <!-- Availability Calendar -->
-          <div class="glass rounded-2xl p-6">
-            <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-              <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-navy-900 mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
               </svg>
               Saadavus
             </h2>
 
             <div class="flex items-center justify-between mb-4">
-              <button type="button" (click)="prevMonth()" class="p-2 text-slate-400 hover:text-white transition-colors">
+              <button type="button" (click)="prevMonth()" class="p-2 text-gray-500 hover:text-navy-900 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
               </button>
-              <span class="text-white font-medium">{{ currentMonthName }} {{ currentYear }}</span>
-              <button type="button" (click)="nextMonth()" class="p-2 text-slate-400 hover:text-white transition-colors">
+              <span class="text-navy-900 font-medium">{{ currentMonthName }} {{ currentYear }}</span>
+              <button type="button" (click)="nextMonth()" class="p-2 text-gray-500 hover:text-navy-900 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                 </svg>
@@ -223,37 +225,37 @@ import {
             </div>
 
             <div class="grid grid-cols-7 gap-1 text-center mb-2">
-              <div *ngFor="let day of weekDays" class="text-xs text-slate-500 py-2">{{ day }}</div>
+              <div *ngFor="let day of weekDays" class="text-xs text-gray-500 py-2">{{ day }}</div>
             </div>
 
             <div class="grid grid-cols-7 gap-1">
               <div *ngFor="let day of calendarDays"
                    (click)="day.date && toggleAvailability(day.date)"
-                   [class]="'calendar-day aspect-square rounded-lg flex items-center justify-center text-sm cursor-pointer ' +
+                   [class]="'calendar-day aspect-square rounded flex items-center justify-center text-sm cursor-pointer border ' +
                      (!day.date ? 'invisible' :
-                       day.isPast ? 'text-slate-600 cursor-not-allowed' :
-                       form.availability[day.date] ? 'bg-emerald-500/30 text-emerald-300 border border-emerald-500/50' :
-                       'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50')">
+                       day.isPast ? 'text-gray-300 cursor-not-allowed border-transparent' :
+                       form.availability[day.date] ? 'bg-green-50 text-green-700 border-green-300' :
+                       'bg-white text-gray-600 border-gray-200 hover:border-gray-400')">
                 {{ day.day }}
               </div>
             </div>
 
             <div class="flex items-center gap-4 mt-4 text-sm">
               <div class="flex items-center gap-2">
-                <div class="w-4 h-4 rounded bg-emerald-500/30 border border-emerald-500/50"></div>
-                <span class="text-slate-400">Saadaval</span>
+                <div class="w-4 h-4 rounded bg-green-50 border border-green-300"></div>
+                <span class="text-gray-600">Saadaval</span>
               </div>
               <div class="flex items-center gap-2">
-                <div class="w-4 h-4 rounded bg-slate-800/50"></div>
-                <span class="text-slate-400">Pole saadaval</span>
+                <div class="w-4 h-4 rounded bg-white border border-gray-200"></div>
+                <span class="text-gray-600">Pole saadaval</span>
               </div>
             </div>
           </div>
 
           <!-- Bio & Contact -->
-          <div class="glass rounded-2xl p-6">
-            <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-              <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-navy-900 mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
               </svg>
               Bio ja kontakt
@@ -261,34 +263,34 @@ import {
 
             <div class="space-y-4">
               <div>
-                <label class="block text-sm text-slate-400 mb-1">Lühike enesetutvustus</label>
+                <label class="block text-sm text-gray-600 mb-1">Lühike enesetutvustus</label>
                 <textarea
                   [(ngModel)]="form.bio"
                   name="bio"
                   rows="4"
-                  class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-colors resize-none"
+                  class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-navy-900 transition-colors resize-none"
                   placeholder="Kirjelda oma kogemust, spetsialiseerumist ja mida otsid..."></textarea>
               </div>
 
               <div class="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm text-slate-400 mb-1">Email *</label>
+                  <label class="block text-sm text-gray-600 mb-1">Email *</label>
                   <input
                     type="email"
                     [(ngModel)]="form.email"
                     name="email"
                     required
-                    class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-colors"
+                    class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-navy-900 transition-colors"
                     placeholder="sinu@email.com">
                 </div>
 
                 <div>
-                  <label class="block text-sm text-slate-400 mb-1">Telefon</label>
+                  <label class="block text-sm text-gray-600 mb-1">Telefon</label>
                   <input
                     type="tel"
                     [(ngModel)]="form.phone"
                     name="phone"
-                    class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-colors"
+                    class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-navy-900 transition-colors"
                     placeholder="+372 ...">
                 </div>
               </div>
@@ -300,13 +302,13 @@ import {
             <button
               type="button"
               (click)="navigateTo('/')"
-              class="flex-1 glass-light py-4 rounded-xl text-white font-medium hover:bg-slate-700/50 transition-all">
+              class="flex-1 bg-white border border-gray-300 py-4 rounded text-gray-700 font-medium hover:bg-gray-50 transition-all">
               Tühista
             </button>
             <button
               type="submit"
               [disabled]="!isFormValid()"
-              class="flex-1 btn-primary py-4 rounded-xl text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed">
+              class="flex-1 btn-primary py-4 rounded text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed">
               Loo profiil
             </button>
           </div>
@@ -315,16 +317,16 @@ import {
     </div>
 
     <!-- Success Modal -->
-    <div *ngIf="showSuccess" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div class="glass rounded-2xl p-8 max-w-md w-full text-center animate-float">
-        <div class="w-16 h-16 mx-auto rounded-full bg-emerald-500/20 flex items-center justify-center mb-4">
-          <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div *ngIf="showSuccess" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+      <div class="bg-white rounded-lg p-8 max-w-md w-full text-center shadow-xl">
+        <div class="w-16 h-16 mx-auto rounded-full bg-green-100 flex items-center justify-center mb-4">
+          <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
           </svg>
         </div>
-        <h3 class="text-xl font-semibold text-white mb-2">Profiil loodud!</h3>
-        <p class="text-slate-400 mb-6">Sinu profiil on nüüd nähtav ettevõtetele. Alusta tööpakkumiste sirvimist!</p>
-        <button (click)="navigateTo('/jobs')" class="btn-primary px-6 py-3 rounded-lg text-white font-medium">
+        <h3 class="text-xl font-semibold text-navy-900 mb-2">Profiil loodud!</h3>
+        <p class="text-gray-500 mb-6">Sinu profiil on nüüd nähtav ettevõtetele. Alusta tööpakkumiste sirvimist!</p>
+        <button (click)="navigateTo('/jobs')" class="btn-primary px-6 py-3 rounded text-white font-medium">
           Vaata tööpakkumisi
         </button>
       </div>

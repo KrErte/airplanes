@@ -10,59 +10,61 @@ import { Freelancer, ROLE_LABELS } from '../../models/models';
   imports: [CommonModule],
   template: `
     <!-- Navigation -->
-    <nav class="glass fixed top-0 left-0 right-0 z-50 px-4 py-3">
-      <div class="max-w-7xl mx-auto flex items-center justify-between">
-        <div class="flex items-center gap-3 cursor-pointer" (click)="navigateTo('/')">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400 to-indigo-500 flex items-center justify-center">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-            </svg>
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2 cursor-pointer" (click)="navigateTo('/')">
+            <div class="w-8 h-8 bg-navy-900 rounded flex items-center justify-center">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+              </svg>
+            </div>
+            <span class="text-lg font-semibold text-navy-900">AviatorConnect</span>
           </div>
-          <span class="text-xl font-semibold gradient-text">AviatorConnect</span>
+          <button (click)="goBack()" class="text-gray-500 hover:text-navy-900 transition-colors flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Tagasi
+          </button>
         </div>
-        <button (click)="goBack()" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-          </svg>
-          Tagasi
-        </button>
       </div>
     </nav>
 
-    <div class="pt-24 pb-12 px-4" *ngIf="freelancer">
+    <div class="py-8 px-4 bg-gray-50 min-h-screen" *ngIf="freelancer">
       <div class="max-w-4xl mx-auto">
         <!-- Header Card -->
-        <div class="glass rounded-2xl p-8 mb-6">
+        <div class="bg-white border border-gray-200 rounded-lg p-6 md:p-8 mb-6">
           <div class="flex flex-col md:flex-row items-start gap-6">
-            <div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-sky-400/20 to-indigo-500/20 flex items-center justify-center flex-shrink-0">
-              <span class="text-3xl font-bold text-sky-400">{{ getInitials(freelancer.name) }}</span>
+            <div class="w-20 h-20 rounded-lg bg-navy-100 flex items-center justify-center flex-shrink-0">
+              <span class="text-2xl font-bold text-navy-700">{{ getInitials(freelancer.name) }}</span>
             </div>
             <div class="flex-1">
-              <h1 class="text-3xl font-bold text-white mb-2">{{ freelancer.name }}</h1>
-              <p class="text-xl text-sky-400 mb-4">{{ getRoleLabel(freelancer.role) }}</p>
+              <h1 class="text-2xl font-bold text-navy-900 mb-1">{{ freelancer.name }}</h1>
+              <p class="text-lg text-blue-600 mb-4">{{ getRoleLabel(freelancer.role) }}</p>
 
-              <div class="flex flex-wrap items-center gap-4 text-slate-400">
+              <div class="flex flex-wrap items-center gap-4 text-gray-500 text-sm">
                 <div class="flex items-center gap-2">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                   </svg>
                   {{ freelancer.location }}, {{ freelancer.country }}
                 </div>
                 <div *ngIf="freelancer.yearsExperience" class="flex items-center gap-2">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
                   {{ freelancer.yearsExperience }} aastat kogemust
                 </div>
                 <div *ngIf="freelancer.hourlyRate" class="flex items-center gap-2">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
                   {{ freelancer.hourlyRate }}
                 </div>
-                <span *ngIf="freelancer.willingToTravel" class="flex items-center gap-1 text-emerald-400">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span *ngIf="freelancer.willingToTravel" class="flex items-center gap-1 text-green-600">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                   </svg>
                   Valmis reisima
@@ -71,7 +73,7 @@ import { Freelancer, ROLE_LABELS } from '../../models/models';
             </div>
             <button
               (click)="showContact = true"
-              class="btn-primary px-6 py-3 rounded-xl text-white font-medium flex items-center gap-2 flex-shrink-0">
+              class="btn-primary px-6 py-3 rounded text-white font-medium flex items-center gap-2 flex-shrink-0">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
               </svg>
@@ -82,20 +84,20 @@ import { Freelancer, ROLE_LABELS } from '../../models/models';
 
         <div class="grid md:grid-cols-2 gap-6">
           <!-- Bio -->
-          <div class="glass rounded-2xl p-6">
-            <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-              <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-navy-900 mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
               </svg>
               Enesetutvustus
             </h2>
-            <p class="text-slate-300 leading-relaxed">{{ freelancer.bio || 'Bio pole lisatud.' }}</p>
+            <p class="text-gray-600 leading-relaxed">{{ freelancer.bio || 'Bio pole lisatud.' }}</p>
           </div>
 
           <!-- Languages -->
-          <div class="glass rounded-2xl p-6">
-            <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-              <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-navy-900 mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
               </svg>
               Keeled
@@ -103,16 +105,16 @@ import { Freelancer, ROLE_LABELS } from '../../models/models';
             <div class="flex flex-wrap gap-2">
               <span
                 *ngFor="let lang of freelancer.languages"
-                class="px-3 py-1.5 bg-emerald-500/20 text-emerald-300 rounded-lg">
+                class="px-3 py-1.5 bg-green-50 text-green-700 border border-green-200 rounded text-sm">
                 {{ lang }}
               </span>
             </div>
           </div>
 
           <!-- Type Ratings -->
-          <div class="glass rounded-2xl p-6">
-            <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-              <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-navy-900 mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
               </svg>
               Type Ratings
@@ -120,19 +122,19 @@ import { Freelancer, ROLE_LABELS } from '../../models/models';
             <div class="flex flex-wrap gap-2">
               <span
                 *ngFor="let rating of freelancer.qualifications.typeRatings"
-                class="px-3 py-1.5 bg-sky-500/20 text-sky-300 rounded-lg">
+                class="px-3 py-1.5 bg-blue-50 text-blue-700 border border-blue-200 rounded text-sm">
                 {{ rating }}
               </span>
-              <span *ngIf="freelancer.qualifications.typeRatings.length === 0" class="text-slate-500">
+              <span *ngIf="freelancer.qualifications.typeRatings.length === 0" class="text-gray-400 text-sm">
                 Type ratinguid pole lisatud
               </span>
             </div>
           </div>
 
           <!-- Licenses -->
-          <div class="glass rounded-2xl p-6">
-            <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-              <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-navy-900 mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
               </svg>
               Litsentsid ja sertifikaadid
@@ -140,10 +142,10 @@ import { Freelancer, ROLE_LABELS } from '../../models/models';
             <div class="flex flex-wrap gap-2">
               <span
                 *ngFor="let license of freelancer.qualifications.licenses"
-                class="px-3 py-1.5 bg-indigo-500/20 text-indigo-300 rounded-lg">
+                class="px-3 py-1.5 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded text-sm">
                 {{ license }}
               </span>
-              <span *ngIf="freelancer.qualifications.licenses.length === 0" class="text-slate-500">
+              <span *ngIf="freelancer.qualifications.licenses.length === 0" class="text-gray-400 text-sm">
                 Litsentse pole lisatud
               </span>
             </div>
@@ -151,22 +153,22 @@ import { Freelancer, ROLE_LABELS } from '../../models/models';
         </div>
 
         <!-- Availability Calendar -->
-        <div class="glass rounded-2xl p-6 mt-6">
-          <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="bg-white border border-gray-200 rounded-lg p-6 mt-6">
+          <h2 class="text-lg font-semibold text-navy-900 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
             Saadavus
           </h2>
 
           <div class="flex items-center justify-between mb-4">
-            <button (click)="prevMonth()" class="p-2 text-slate-400 hover:text-white transition-colors">
+            <button (click)="prevMonth()" class="p-2 text-gray-500 hover:text-navy-900 transition-colors">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
               </svg>
             </button>
-            <span class="text-white font-medium">{{ currentMonthName }} {{ currentYear }}</span>
-            <button (click)="nextMonth()" class="p-2 text-slate-400 hover:text-white transition-colors">
+            <span class="text-navy-900 font-medium">{{ currentMonthName }} {{ currentYear }}</span>
+            <button (click)="nextMonth()" class="p-2 text-gray-500 hover:text-navy-900 transition-colors">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
               </svg>
@@ -174,28 +176,28 @@ import { Freelancer, ROLE_LABELS } from '../../models/models';
           </div>
 
           <div class="grid grid-cols-7 gap-1 text-center mb-2">
-            <div *ngFor="let day of weekDays" class="text-xs text-slate-500 py-2">{{ day }}</div>
+            <div *ngFor="let day of weekDays" class="text-xs text-gray-500 py-2">{{ day }}</div>
           </div>
 
           <div class="grid grid-cols-7 gap-1">
             <div *ngFor="let day of calendarDays"
-                 [class]="'aspect-square rounded-lg flex items-center justify-center text-sm ' +
+                 [class]="'aspect-square rounded flex items-center justify-center text-sm border ' +
                    (!day.date ? 'invisible' :
-                     day.isPast ? 'text-slate-600' :
-                     freelancer.availability[day.date] ? 'bg-emerald-500/30 text-emerald-300' :
-                     'bg-slate-800/50 text-slate-500')">
+                     day.isPast ? 'text-gray-300 border-transparent' :
+                     freelancer.availability[day.date] ? 'bg-green-50 text-green-700 border-green-200' :
+                     'bg-gray-50 text-gray-400 border-gray-100')">
               {{ day.day }}
             </div>
           </div>
 
           <div class="flex items-center gap-4 mt-4 text-sm">
             <div class="flex items-center gap-2">
-              <div class="w-4 h-4 rounded bg-emerald-500/30"></div>
-              <span class="text-slate-400">Saadaval</span>
+              <div class="w-4 h-4 rounded bg-green-50 border border-green-200"></div>
+              <span class="text-gray-600">Saadaval</span>
             </div>
             <div class="flex items-center gap-2">
-              <div class="w-4 h-4 rounded bg-slate-800/50"></div>
-              <span class="text-slate-400">Pole saadaval</span>
+              <div class="w-4 h-4 rounded bg-gray-50 border border-gray-100"></div>
+              <span class="text-gray-600">Pole saadaval</span>
             </div>
           </div>
         </div>
@@ -203,19 +205,19 @@ import { Freelancer, ROLE_LABELS } from '../../models/models';
     </div>
 
     <!-- Not found -->
-    <div *ngIf="!freelancer && !loading" class="pt-32 px-4 text-center">
-      <h2 class="text-2xl font-bold text-white mb-4">Profiili ei leitud</h2>
-      <button (click)="navigateTo('/freelancers')" class="btn-primary px-6 py-3 rounded-lg text-white">
+    <div *ngIf="!freelancer && !loading" class="py-32 px-4 text-center bg-gray-50 min-h-screen">
+      <h2 class="text-2xl font-bold text-navy-900 mb-4">Profiili ei leitud</h2>
+      <button (click)="navigateTo('/freelancers')" class="btn-primary px-6 py-3 rounded text-white">
         Tagasi otsingusse
       </button>
     </div>
 
     <!-- Contact Modal -->
-    <div *ngIf="showContact" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div class="glass rounded-2xl p-8 max-w-md w-full">
+    <div *ngIf="showContact" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+      <div class="bg-white rounded-lg p-8 max-w-md w-full shadow-xl">
         <div class="flex items-center justify-between mb-6">
-          <h3 class="text-xl font-semibold text-white">Kontaktandmed</h3>
-          <button (click)="showContact = false" class="text-slate-400 hover:text-white transition-colors">
+          <h3 class="text-xl font-semibold text-navy-900">Kontaktandmed</h3>
+          <button (click)="showContact = false" class="text-gray-400 hover:text-navy-900 transition-colors">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
@@ -223,32 +225,32 @@ import { Freelancer, ROLE_LABELS } from '../../models/models';
         </div>
 
         <div class="space-y-4">
-          <div class="flex items-center gap-4 p-4 bg-slate-800/50 rounded-xl">
-            <div class="w-10 h-10 rounded-lg bg-sky-500/20 flex items-center justify-center">
-              <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
               </svg>
             </div>
             <div>
-              <div class="text-xs text-slate-400 mb-1">Email</div>
-              <div class="text-white">{{ freelancer?.email }}</div>
+              <div class="text-xs text-gray-500 mb-1">Email</div>
+              <div class="text-navy-900">{{ freelancer?.email }}</div>
             </div>
           </div>
 
-          <div *ngIf="freelancer?.phone" class="flex items-center gap-4 p-4 bg-slate-800/50 rounded-xl">
-            <div class="w-10 h-10 rounded-lg bg-sky-500/20 flex items-center justify-center">
-              <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div *ngIf="freelancer?.phone" class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
               </svg>
             </div>
             <div>
-              <div class="text-xs text-slate-400 mb-1">Telefon</div>
-              <div class="text-white">{{ freelancer?.phone }}</div>
+              <div class="text-xs text-gray-500 mb-1">Telefon</div>
+              <div class="text-navy-900">{{ freelancer?.phone }}</div>
             </div>
           </div>
         </div>
 
-        <p class="text-xs text-slate-500 mt-6 text-center">
+        <p class="text-xs text-gray-400 mt-6 text-center">
           Võta spetsialistiga otse ühendust. AviatorConnect ei vahenda suhtlust.
         </p>
       </div>
